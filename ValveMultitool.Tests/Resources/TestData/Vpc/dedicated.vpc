@@ -1,0 +1,26 @@
+//-----------------------------------------------------------------------------
+//	DEDICATED_MAIN.VPC
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Configuration
+{
+    $Macro SRCDIR		".."
+    $Macro OUTBINDIR	"$SRCDIR\..\game"
+	$Compiler
+	{
+		$AdditionalIncludeDirectories		"$BASE,..\common"
+	}
+}
+
+$Macro SRCDIR		".."
+$Macro OUTBINDIR	"$SRCDIR\..\game"
+$Macro OUTBINNAME	"srcds" [($WIN32||!$BELLBOI&&$WIN64||($THE||($TEST||$LOL&&$BELL)||$XD)) || $POSIX || $BELL && $TEST]
+$Macro OUTBINNAME	"srcds_osx" [!$OSXALL]
+$Macro OUTBINNAME	"srcds_linux" [$LINUXALL]
+
+$Include "$SRCDIR\vpc_scripts\source_exe_base.vpc"
+$Include "$SRCDIR\tier0\tier0_exclude.vpc"
+//$Include "$SRCDIR\tier1\tier1_exclude.vpc" [$WINDOWS]
+//$Include "$SRCDIR\vstdlib\vstdlib_exclude.vpc" [$WINDOWS]

@@ -1,0 +1,36 @@
+﻿syntax = "proto3";
+
+message Payload {
+	repeated .Payload.FileMapping mappings = 1;
+	message FileMapping {
+		string filename = 1;
+		uint64 size = 2;
+		uint32 flags = 3;
+		bytes sha_filename = 4;
+		bytes sha_content = 5;
+		repeated .Payload.FileMapping.ChunkData chunks = 6;
+		message ChunkData {
+			bytes sha = 1;
+			fixed32 crc = 2;
+			uint64 offset = 3;
+			uint32 cb_original = 4;
+			uint32 cb_compressed = 5;
+		}
+	}
+}
+
+message Metadata {
+	uint32 depot_id = 1;
+	uint64 gid_manifest = 2;
+	uint32 creation_time = 3;
+	bool filenames_encrypted = 4;
+	uint64 cb_disk_original = 5;
+	uint64 cb_disk_compressed = 6;
+	uint32 unique_chunks = 7;
+	uint32 crc_encrypted = 8;
+	uint32 crc_clear = 9;
+}
+
+message Signature {
+	bytes signature = 1;
+}

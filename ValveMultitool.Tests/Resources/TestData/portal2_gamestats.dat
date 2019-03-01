@@ -1,0 +1,39 @@
+"gamestats_portal2"
+{
+	"IsPc"		"1"
+	"version"		"1"
+	"srcid"		"bd0ce05655230e45"
+	"CPUID"		"GenuineIntel"
+	"CPUGhz"		"2.711992"
+	"NumCores"		"4"
+	"GPUDrv"		"NVIDIA GeForce GTX 1070"
+	"GPUVendor"		"4318"
+	"GPUDeviceID"		"7041"
+	"GPUDriverVersion"		"1572885.861779"
+	"DxLvl"		"100"
+	"Width"		"1920"
+	"Height"		"1080"
+	"IsSplitScreen"		"0"
+	"appid"		"620"
+	"map"
+	{
+		"mapname"		"workshop\922544606371012601\1517112227"
+	}
+	"map"
+	{
+		"mapname"		"1517112227"
+		"perfdata"
+		{
+			"AvgFPS"		"99.088699"
+			"MinFPS"		"1.480839"
+			"MaxFPS"		"256.000000"
+			"AvgServerPing"		"5.003334"
+		}
+		"Caption"		"0"
+		"BugSub"		"0"
+		"Language"		"english"
+		"Windowed"		"1"
+		"WindowedNoBorder"		"1"
+		"MapTime"		"1304"
+	}
+}
