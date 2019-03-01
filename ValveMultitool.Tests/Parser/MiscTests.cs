@@ -23,11 +23,11 @@ namespace ValveMultitool.Tests.Parser
                 var data = KvSerializer.Create(KvSerializationFormat.KeyValues1Text).Deserialize<CellMap>(stream);
             }*/
 
-            using (var client = new ValveIpcClient("HAMMER_IPC_SERVER"))
-            {
-                if (!client.Connected) return;
-                var result = client.Invoke("echo hi");
-            }
+            //using (var client = new ValveIpcClient("HAMMER_IPC_SERVER"))
+            //{
+            //    if (!client.Connected) return;
+            //    var result = client.Invoke("echo hi");
+            //}
         }
     }
 }
