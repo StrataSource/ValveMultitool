@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Chaos Initiative Team</Authors>
+    <Description>ValveMultitool is a multipurpose library developed by the Chaos Initiative team. It can interoperate with and parse a wide range of Valve, Steam and Source datamodels such as GameStats Chunk &amp; Lump, Binary VDF, VPC, INF and more. It is used by many projects including CSERServer and the Chaos applications.</Description>
+    <Company></Company>
+    <Copyright>© 2019 Joseph Marsden</Copyright>
+    <PackageProjectUrl>https://github.com/CitadelCore/ValveMultitool</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/CitadelCore/ValveMultitool/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/CitadelCore/ValveMultitool/master/multitool_logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/CitadelCore/ValveMultitool</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Version>1.2.0</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
