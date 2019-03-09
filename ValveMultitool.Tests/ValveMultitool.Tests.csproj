@@ -74,6 +74,9 @@
     <None Update="Resources\TestData\Vpc\dedicated.vpc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TestData\Vpc\source_exe_win_win32_release.vpc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

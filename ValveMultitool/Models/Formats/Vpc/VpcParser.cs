@@ -37,8 +37,9 @@ namespace ValveMultitool.Models.Formats.Vpc
             while (_stream.Position != _stream.Length)
             {
                 var @char = NextChar();
+                var state = _stateStack.Peek();
 
-                switch (_stateStack.Peek())
+                switch (state)
                 {
                     case ParserState.SeekType:
                         SeekType(@char);
@@ -79,11 +80,12 @@ namespace ValveMultitool.Models.Formats.Vpc
             return (char) _stream.ReadByte();
         }
 
-        private void PopAndAppendToParent()
+        private void PopCurrentObject()
         {
             var obj = _objectStack.Pop();
             _objectStack.Peek().Add(new VpcValue { Type = VpcValueType.Object, Value = obj });
             _builder.Clear();
+            _stateStack.Pop();
         }
 
         private void SeekType(char @char)
@@ -107,11 +109,7 @@ namespace ValveMultitool.Models.Formats.Vpc
             }
 
             // end of array
-            if (@char == '}')
-            {
-                PopAndAppendToParent();
-                _stateStack.Pop();
-            }
+            if (@char == '}') PopCurrentObject();
         }
 
         /// <summary>
@@ -130,6 +128,9 @@ namespace ValveMultitool.Models.Formats.Vpc
                 _builder.Clear();
                 return;
             }
+
+            // TODO: hack? maybe?
+            if (@char == '@') return;
 
             _builder.Append(@char);
         }
@@ -161,11 +162,34 @@ namespace ValveMultitool.Models.Formats.Vpc
                 _builder.Clear();
             }
 
-            // actual key
-            else
+            // overrun characters
+            else if (@char == '$' || @char == '/' || @char == '}')
             {
-                _builder.Append(@char);
+                // pop ourselves
+                PopCurrentObject();
+
+                switch (@char)
+                {
+                    case '$':
+                        // push a new object
+                        _objectStack.Push(new VpcObject());
+                        _stateStack.Push(ParserState.Type);
+                        break;
+                    case '/':
+                        _stateStack.Push(ParserState.Comment);
+                        _builder.Clear();
+                        _builder.Append(@char);
+                        break;
+                    case '}':
+                        PopCurrentObject();
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
             }
+
+            // actual key
+            else _builder.Append(@char);
         }
 
         private void ReadValueString(char @char)
@@ -176,22 +200,14 @@ namespace ValveMultitool.Models.Formats.Vpc
                 // push the string
                 _objectStack.Peek().Add(new VpcValue { Type = VpcValueType.String, Value = _builder.ToString() });
             }
-            else if (@char == '\n')
-            {
-                PopAndAppendToParent();
-                _stateStack.Pop();
-            }
+            else if (@char == '\n') PopCurrentObject();
             else if (@char == '[')
             {
                 _conditionalStack.Push(_objectStack.Peek().Conditions);
                 _stateStack.Push(ParserState.Condition);
                 _builder.Clear();
             }
-            else
-            {
-                if (char.IsWhiteSpace(@char)) return;
-                _builder.Append(@char);
-            }
+            else _builder.Append(@char);
         }
 
         private void ReadCondition(char @char)
@@ -211,10 +227,7 @@ namespace ValveMultitool.Models.Formats.Vpc
             }
 
             // negation
-            else if (@char == '!')
-            {
-                _nextNegated = true;
-            }
+            else if (@char == '!') _nextNegated = true;
 
             // end
             else if (@char == ']')
@@ -223,20 +236,16 @@ namespace ValveMultitool.Models.Formats.Vpc
                 if (_builder.Length > 0)
                     EndVariable();
 
-                PopAndAppendToParent();
+                PopCurrentObject();
 
                 // pop the conditional
                 _conditionalStack.Pop();
 
-                // pop twice to get out of the array
-                _stateStack.Pop();
+                // pop the state again to get out of the array
                 _stateStack.Pop();
             }
-            else if (@char == '(')
-            {
-                // start of conditional sub-array
-                _conditionalStack.Push(new VpcConditionalCollection());
-            }
+            // start of conditional sub-array
+            else if (@char == '(') _conditionalStack.Push(new VpcConditionalCollection());
             else if (@char == ')')
             {
                 // end of conditional sub-array
@@ -249,10 +258,7 @@ namespace ValveMultitool.Models.Formats.Vpc
                 EndVariable();
                 _lastConditional = new VpcConditional(null, VpcOperator.None);
             }
-            else
-            {
-                _builder.Append(@char);
-            }
+            else _builder.Append(@char);
         }
 
         private void ReadComment(char @char)
@@ -263,10 +269,7 @@ namespace ValveMultitool.Models.Formats.Vpc
                 _stateStack.Pop();
                 _builder.Clear();
             }
-            else if (@char != '\r')
-            {
-                _builder.Append(@char);
-            }
+            else if (@char != '\r') _builder.Append(@char);
         }
 
         private void EndVariable()
@@ -295,9 +298,7 @@ namespace ValveMultitool.Models.Formats.Vpc
             Key,
             ValueArray,
             ValueString,
-            ValueObject,
             Condition,
-            ConditionArray,
             Comment
         }
     }
