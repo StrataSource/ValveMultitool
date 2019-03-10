@@ -9,8 +9,10 @@ namespace ValveMultitool.Tests.Parser.Vpc
 {
     [TestClass]
     [DeploymentItem("Resources/TestData/Vpc")]
-    public class VpcParseConsistency
+    public class VpcParserTestCase
     {
+
+
         [TestMethod]
         public void Behaviour()
         {
