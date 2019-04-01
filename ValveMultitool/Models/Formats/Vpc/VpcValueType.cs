@@ -8,6 +8,10 @@ namespace ValveMultitool.Models.Formats.Vpc
     {
         String,
         Object,
+
+        /// <summary>
+        /// A comment, this is not parsed.
+        /// </summary>
         Comment
     }
 }
