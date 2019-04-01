@@ -19,6 +19,12 @@ namespace ValveMultitool.Tests.Parser.Vpc
             VpcObject obj = null;
             using (var stream = File.OpenRead("Resources/TestData/Vpc/dedicated.vpc"))
                 obj = VpcObject.Parse(stream);
+
+            using (var stream = new MemoryStream())
+            {
+                obj.Serialise(stream);
+                var result = Encoding.UTF8.GetString(stream.ToArray());
+            }
         }
     }
 }

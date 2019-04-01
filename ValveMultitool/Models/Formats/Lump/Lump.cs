@@ -9,8 +9,7 @@ namespace ValveMultitool.Models.Formats.Lump
         public ushort LumpId { get; set; }
         public ushort LumpCount { get; set; }
         public byte LumpVersion { get; set; }
-        public IList<IElement> Children { get; set; }
-            = new List<IElement>();
+        public IList<IElement> Children { get; } = new List<IElement>();
 
         public Lump(byte version = 0x00)
         {

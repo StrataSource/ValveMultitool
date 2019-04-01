@@ -22,6 +22,11 @@ namespace ValveMultitool.Models.Formats.Vpc
             return new VpcParser(stream).Parse();
         }
 
+        public void Serialise(Stream stream)
+        {
+            new VpcSerialiser(stream, this).Serialise();
+        }
+
         public override string ToString()
         {
             var type = string.IsNullOrWhiteSpace(Type) ? "Root" : Type;

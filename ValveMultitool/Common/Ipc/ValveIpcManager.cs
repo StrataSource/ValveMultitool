@@ -5,8 +5,6 @@ using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using SteamKit2.GC.Dota.Internal;
-using ValveMultitool.Utilities.Extensions;
 
 namespace ValveMultitool.Common.Ipc
 {
@@ -16,8 +14,8 @@ namespace ValveMultitool.Common.Ipc
         private readonly Mutex _mutex = new Mutex(false, $"{ProtocolName}_MTX_{ProtocolVersion}");
 
         internal const int ProtocolVersion = 1;
-        internal const long ProtocolMemory = 256 * 1024; // 256 KB
-        internal const string ProtocolName = "VALVE_IPC_MGR_";
+        private const long ProtocolMemory = 256 * 1024; // 256 KB
+        private const string ProtocolName = "VALVE_IPC_MGR_";
 
         public ValveIpcManager()
         {

@@ -7,7 +7,7 @@ namespace ValveMultitool.Models.Formats.Vpc
     public enum VpcValueType
     {
         String,
-        Array,
-        Object
+        Object,
+        Comment
     }
 }
