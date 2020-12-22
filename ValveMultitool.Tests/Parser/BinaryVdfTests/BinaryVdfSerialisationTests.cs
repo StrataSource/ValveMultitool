@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ValveKeyValue;
 using ValveMultitool.Models.Formats.Steam.Distribution.Apps;
 using ValveMultitool.Models.Formats.Vdf.Binary;
 

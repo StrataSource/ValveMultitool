@@ -34,7 +34,7 @@ namespace ValveMultitool.Models.Formats.Vpc
 
         internal VpcObject Parse()
         {
-            while (_stream.Position != _stream.Length)
+            while (_stream.Position < _stream.Length)
             {
                 var @char = NextChar();
                 var state = _stateStack.Peek();
@@ -103,6 +103,7 @@ namespace ValveMultitool.Models.Formats.Vpc
             // Start of comment
             else if (@char == '/')
             {
+                _objectStack.Push(new VpcObject());
                 _stateStack.Push(ParserState.Comment);
                 _builder.Clear();
                 _builder.Append(@char);
@@ -176,6 +177,7 @@ namespace ValveMultitool.Models.Formats.Vpc
                         _stateStack.Push(ParserState.Type);
                         break;
                     case '/':
+                        _objectStack.Push(new VpcObject());
                         _stateStack.Push(ParserState.Comment);
                         _builder.Clear();
                         _builder.Append(@char);
@@ -216,7 +218,7 @@ namespace ValveMultitool.Models.Formats.Vpc
             if (char.IsWhiteSpace(@char)) return;
 
             // operator
-            else if (@char == '&' || @char == '|')
+            if (@char == '&' || @char == '|')
             {
                 // If we see any operator, set the operator of the last statement
                 if (NextChar() != @char) throw new Exception("Invalid conditional operator!");
@@ -266,8 +268,8 @@ namespace ValveMultitool.Models.Formats.Vpc
             // Are we at the end?
             if (@char == '\n')
             {
-                _stateStack.Pop();
-                _builder.Clear();
+                _objectStack.Peek().Add(new VpcValue { Type = VpcValueType.Comment, Value = _builder.ToString() });
+                PopCurrentObject();
             }
             else if (@char != '\r') _builder.Append(@char);
         }

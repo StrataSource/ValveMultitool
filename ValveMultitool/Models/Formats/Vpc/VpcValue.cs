@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ValveMultitool.Models.Formats.Vpc
+﻿namespace ValveMultitool.Models.Formats.Vpc
 {
     public class VpcValue
     {
